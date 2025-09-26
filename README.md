@@ -1,8 +1,7 @@
-# DEPI project
+# Eventa
 
 ## Description
-This is a graduation project for the **Digital Egypt Pioneers Initiative (DEPI)** under the **Full Stack .NET Web Development track**.  
-The project will be developed by a team of 5 and will include Frontend, Backend, and Database components.  
+Eventa – A platform to create, manage, and join events with ease.
 
 
 ## Team Members
