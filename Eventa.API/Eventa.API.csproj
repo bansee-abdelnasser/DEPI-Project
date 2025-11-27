@@ -15,11 +15,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
+    <ProjectReference Include="..\Eventa.Application\Eventa.Application.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Eventa.Application\Eventa.Application.csproj" />
+    <Folder Include="wwwroot\images\profile\" />
   </ItemGroup>
 
 </Project>

@@ -1,4 +1,6 @@
+using Eventa.Application;
 using Eventa.DataAccess;
+using Eventa.DataAccess.Identity;
 
 namespace Eventa.API
 {
@@ -14,9 +16,22 @@ namespace Eventa.API
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            //builder.Services.AddSwaggerGen();
 
-            builder.Services.AddDataAccessServices(builder.Configuration);
+            builder.Services.AddCustomSwaggerGen();
+
+
+            var JwtSection = builder.Configuration.GetSection(JwtOptions.sectionName);
+
+            builder.Services.Configure<JwtOptions>(JwtSection);
+
+            builder.Services
+                 .AddDataAccessServices(builder.Configuration) // minimal: DbContext + Identity
+                 .AddApplicationServices(); // your application layer services
+
+            builder.Services.AddAuthenticationWithJWT(builder.Configuration);
+
+            builder.Services.AddAuthorization();
 
             var app = builder.Build();
 
@@ -25,10 +40,12 @@ namespace Eventa.API
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
+                _ = app.SeedRoles();
             }
 
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
 

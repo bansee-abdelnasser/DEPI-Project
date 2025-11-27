@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Eventa.DataAccess.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,10 +9,13 @@ using System.Threading.Tasks;
 
 namespace Eventa.DataAccess.DataContext
 {
-    internal class EventaDbContext : DbContext
+    internal class EventaDbContext : IdentityDbContext<AppUser>
     {
         public EventaDbContext(DbContextOptions<EventaDbContext> options) : base(options)
         {
         }
+
+        public DbSet<UserFavorite> UserFavorites { get; set; }
+
     }
 }
