@@ -1,0 +1,21 @@
+﻿using Eventa.Application.DTOs.User;
+using Microsoft.AspNetCore.Identity;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Eventa.Application.Contracts
+{
+    public interface IUserService
+    {
+        Task<IdentityResult> Register(UserRegisterDto user);
+
+        Task<UserLoginResult> LoginAsync(UserLoginDto user);
+
+        Task<ProfileUpdateResultDto> UpdateProfileAsync(string userId,UpdateProfileDto dto);
+
+        Task<bool> DeleteProfilePictureAsync(string userId);
+    }
+}

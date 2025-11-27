@@ -50,6 +50,31 @@ public class BaseRepository<TEntity, TId> : IBaseRepository<TEntity, TId> where 
             _dbSet.Remove(entity);
         }
 
+        public async Task<TEntity?> DeleteAsync(TId id)
+        {
+            TEntity? entity = await FindByIdAsync(id);
+            if (entity != null)
+            {
+                _dbSet.Remove(entity);
+                return entity;
+            }
+            return null;
+        }
+
+        public async Task<IEnumerable<TEntity>> GetAllAsync()
+        {
+            return await _dbSet.ToListAsync();
+        }
+
+        public async Task<TEntity?> FindByIdAsync(TId id)
+        {
+            return await _dbSet.FindAsync(id);
+        }
+
+        public async Task CreateAsync(TEntity entity)
+        {
+           await _dbSet.AddAsync(entity);
+        }
         return entity;
     }
 }
