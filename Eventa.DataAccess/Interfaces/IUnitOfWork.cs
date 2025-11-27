@@ -7,18 +7,24 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace Eventa.DataAccess.Interfaces
 {
-    public interface IUnitOfWork
+    public interface IUnitOfWork : IDisposable
     {
         UserManager<AppUser> UserManager { get; }
         public ITokenManager TokenManager { get; }
 
         IFavoriteRepository Favorites { get; }
 
-        IBaseRepository<Event, int> Events { get; }
+        //IBaseRepository<Event, int> Events { get; }
         void SaveChanges();
 
         Task SaveChangesAsync();    
+        ICategoryRepository Categories { get; }
+        IEventRepository Events { get; }
+        IAnnouncementRepository Announcements { get; }
+
+        int Save();
     }
 }

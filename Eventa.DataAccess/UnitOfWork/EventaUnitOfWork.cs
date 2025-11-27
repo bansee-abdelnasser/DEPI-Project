@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Eventa.DataAccess.UnitOfWork
 {
-    internal class EventaUnitOfWork: IUnitOfWork
+    public class EventaUnitOfWork : IUnitOfWork
     {
         private readonly EventaDbContext _context;
         private readonly UserManager<AppUser> _userManager;
@@ -41,8 +41,32 @@ namespace Eventa.DataAccess.UnitOfWork
         public IBaseRepository<Event, int> Events => _events.Value;
 
         public void SaveChanges()
+        public ICategoryRepository Categories { get; }
+        public IEventRepository Events { get; }
+        public IAnnouncementRepository Announcements { get; }
+
+        public EventaUnitOfWork(
+         EventaDbContext context,
+         IEventRepository events,
+         ICategoryRepository categories,
+         IAnnouncementRepository announcements
+)
         {
-            _context.SaveChanges();
+            _context = context;
+            Events = events;
+            Categories = categories;
+            Announcements = announcements;
+        }
+
+
+        public int Save()
+        {
+            return _context.SaveChanges();
+        }
+
+        public void Dispose()
+        {
+            _context.Dispose();
         }
 
         public async Task SaveChangesAsync()

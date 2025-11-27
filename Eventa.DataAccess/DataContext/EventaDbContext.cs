@@ -16,6 +16,10 @@ namespace Eventa.DataAccess.DataContext
         }
 
         public DbSet<UserFavorite> UserFavorites { get; set; }
+        public DbSet<Event> Events { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Announcement> Announcements { get; set; }
+        public DbSet<Organizer> Organizers { get; set; }
 
     }
 }

@@ -4,56 +4,50 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-
-namespace Eventa.DataAccess.Repositories
+public class BaseRepository<TEntity, TId> : IBaseRepository<TEntity, TId> where TEntity : class
 {
-    internal class BaseRepository<TEntity, TId> : IBaseRepository<TEntity, TId> where TEntity : class
+    private readonly EventaDbContext _context;
+    private readonly DbSet<TEntity> _dbSet;
+
+    public BaseRepository(EventaDbContext context)
     {
-        private readonly EventaDbContext _context;
-        private readonly DbSet<TEntity> _dbSet;
+        _context = context;
+        _dbSet = _context.Set<TEntity>();
+    }
 
-        public BaseRepository(EventaDbContext context)
-        {
-            _context = context;
-            _dbSet = _context.Set<TEntity>();
-        }
+    public IEnumerable<TEntity> GetAll()
+    {
+        return _dbSet.AsEnumerable();
+    }
 
-        public IEnumerable<TEntity> GetAll()
-        {
-            return _dbSet.AsEnumerable();
-        }
+    public IQueryable<TEntity> GetAllQueryable()
+    {
+        return _dbSet.AsQueryable();
+    }
 
-        public IQueryable<TEntity> GetAllQueryable()
-        {
-            return _dbSet.AsQueryable();
-        }
+    public TEntity? FindById(TId id)
+    {
+        return _dbSet.Find(id);
+    }
 
-        public TEntity? FindById(TId id)
-        {
-            return _dbSet.Find(id);
-        }
+    public void Create(TEntity entity)
+    {
+        _dbSet.Add(entity);
+    }
 
-        public void Create(TEntity entity)
-        {
-            _dbSet.Add(entity);
-        }
+    public void Update(TEntity entity)
+    {
+        _dbSet.Update(entity);
+    }
 
-        public void Update(TEntity entity)
-        {
-            _dbSet.Update(entity);
-        }
+    public TEntity? Delete(TId id)
+    {
+        var entity = FindById(id);
 
-        public TEntity? Delete(TId id)
+        if (entity != null)
         {
-            TEntity? entity = FindById(id);
-            if (entity != null)
-            {
-                _dbSet.Remove(entity);
-                return entity;
-            }
-            return null;
+            _dbSet.Remove(entity);
         }
 
         public async Task<TEntity?> DeleteAsync(TId id)
@@ -81,5 +75,6 @@ namespace Eventa.DataAccess.Repositories
         {
            await _dbSet.AddAsync(entity);
         }
+        return entity;
     }
 }
