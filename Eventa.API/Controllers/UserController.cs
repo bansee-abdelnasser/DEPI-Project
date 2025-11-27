@@ -1,5 +1,5 @@
-﻿using Eventa.Application.Contracts;
-using Eventa.Application.DTOs.User;
+﻿using Eventa.Application.DTOs.User;
+using Eventa.Application.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

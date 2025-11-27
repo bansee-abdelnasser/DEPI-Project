@@ -1,4 +1,4 @@
-﻿using Eventa.Application.Contracts;
+﻿using Eventa.Application.Interfaces;
 using Eventa.Application.Services;
 using Microsoft.Extensions.DependencyInjection;
 using System;

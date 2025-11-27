@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Eventa.Application.Contracts
+namespace Eventa.Application.Interfaces
 {
     public interface IUserService
     {

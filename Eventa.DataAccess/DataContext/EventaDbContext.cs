@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Eventa.DataAccess.DataContext
 {
-    internal class EventaDbContext : IdentityDbContext<AppUser>
+    public class EventaDbContext : IdentityDbContext<AppUser>
     {
         public EventaDbContext(DbContextOptions<EventaDbContext> options) : base(options)
         {

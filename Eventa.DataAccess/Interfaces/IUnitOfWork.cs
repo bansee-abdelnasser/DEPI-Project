@@ -18,7 +18,7 @@ namespace Eventa.DataAccess.Interfaces
         IFavoriteRepository Favorites { get; }
 
         //IBaseRepository<Event, int> Events { get; }
-        void SaveChanges();
+        //void SaveChanges();
 
         Task SaveChangesAsync();    
         ICategoryRepository Categories { get; }

@@ -1,5 +1,5 @@
-﻿using Eventa.Application.Contracts;
-using Eventa.Application.DTOs.User;
+﻿using Eventa.Application.DTOs.User;
+using Eventa.Application.Interfaces;
 using Eventa.DataAccess.Entities;
 using Eventa.DataAccess.Interfaces;
 using Microsoft.EntityFrameworkCore;
