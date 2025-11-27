@@ -4,10 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace Eventa.DataAccess.Interfaces
 {
-    public interface IUnitOfWork
+    public interface IUnitOfWork : IDisposable
     {
-        void SaveChanges();
+        ICategoryRepository Categories { get; }
+        IEventRepository Events { get; }
+        IAnnouncementRepository Announcements { get; }
+
+        int Save();
     }
 }

@@ -8,18 +8,37 @@ using System.Threading.Tasks;
 
 namespace Eventa.DataAccess.UnitOfWork
 {
-    internal class EventaUnitOfWork:IUnitOfWork
+    public class EventaUnitOfWork : IUnitOfWork
     {
         private readonly EventaDbContext _context;
 
-        public EventaUnitOfWork(EventaDbContext context)
+        public ICategoryRepository Categories { get; }
+        public IEventRepository Events { get; }
+        public IAnnouncementRepository Announcements { get; }
+
+        public EventaUnitOfWork(
+         EventaDbContext context,
+         IEventRepository events,
+         ICategoryRepository categories,
+         IAnnouncementRepository announcements
+)
         {
             _context = context;
+            Events = events;
+            Categories = categories;
+            Announcements = announcements;
         }
 
-        public void SaveChanges()
+
+        public int Save()
         {
-            _context.SaveChanges();
+            return _context.SaveChanges();
         }
+
+        public void Dispose()
+        {
+            _context.Dispose();
+        }
+
     }
 }
