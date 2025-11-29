@@ -15,7 +15,7 @@ namespace Eventa.Application
         {
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IFavoriteService, FavoriteService>();
-
+            services.AddScoped<IOrganizerService, OrganizerService>();
 
             return services;
         }

@@ -37,8 +37,8 @@ namespace Eventa.DataAccess.Entities
         public Category? Category { get; set; }
 
         //  Organizer Relation
-        public int? OrganizerId { get; set; }
-        public Organizer? Organizer { get; set; }
+        public string? OrganizerId { get; set; }
+        public AppUser? Organizer { get; set; }
 
 
         //  Announcements (1 Event -> many Announcements)

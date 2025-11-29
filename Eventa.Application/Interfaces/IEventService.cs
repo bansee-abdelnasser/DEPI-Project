@@ -12,7 +12,7 @@ namespace Eventa.Application.Interfaces
     {
         IEnumerable<EventDto> GetAllEvents();
         EventDto? GetEventById(int id);
-        EventDto CreateEvent(CreateEventDto dto);
+        EventDto CreateEvent(CreateEventDto dto, string organizerId);
         bool UpdateEvent(int id, UpdateEventDto dto);
         bool DeleteEvent(int id);
     }

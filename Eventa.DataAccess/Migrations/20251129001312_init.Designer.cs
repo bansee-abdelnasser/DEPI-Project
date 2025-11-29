@@ -4,6 +4,7 @@ using Eventa.DataAccess.DataContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Eventa.DataAccess.Migrations
 {
     [DbContext(typeof(EventaDbContext))]
-    partial class EventaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251129001312_init")]
+    partial class init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -218,6 +221,19 @@ namespace Eventa.DataAccess.Migrations
                     b.HasIndex("OrganizerId");
 
                     b.ToTable("Events");
+                });
+
+            modelBuilder.Entity("Eventa.DataAccess.Entities.Organizer", b =>
+                {
+                    b.Property<int>("OrganizerID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrganizerID"));
+
+                    b.HasKey("OrganizerID");
+
+                    b.ToTable("Organizers");
                 });
 
             modelBuilder.Entity("Eventa.DataAccess.Entities.OrganizerRating", b =>

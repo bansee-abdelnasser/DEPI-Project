@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Eventa.Application.DTOs.Announcement;
 using Eventa.Application.Interfaces;
 using Eventa.DataAccess.Entities;
-using Eventa.Application.DTOs.Announcement;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Eventa.API.Controllers
 {
@@ -30,14 +31,14 @@ namespace Eventa.API.Controllers
             if (a == null) return NotFound();
             return Ok(a);
         }
-
+        [Authorize(Roles = "organizers")]
         [HttpPost]
         public IActionResult Create([FromBody] CreateAnnouncementDto dto)
         {
             var newA = _service.Create(dto);
             return Ok(newA);
         }
-
+        [Authorize(Roles = "organizers")]
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {

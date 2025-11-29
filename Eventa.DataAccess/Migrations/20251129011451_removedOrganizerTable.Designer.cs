@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Eventa.DataAccess.Migrations
 {
     [DbContext(typeof(EventaDbContext))]
-    [Migration("20251128205422_init")]
-    partial class init
+    [Migration("20251129011451_removedOrganizerTable")]
+    partial class removedOrganizerTable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -197,8 +197,8 @@ namespace Eventa.DataAccess.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int?>("OrganizerId")
-                        .HasColumnType("int");
+                    b.Property<string>("OrganizerId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Recurrence")
                         .HasColumnType("nvarchar(max)");
@@ -223,17 +223,31 @@ namespace Eventa.DataAccess.Migrations
                     b.ToTable("Events");
                 });
 
-            modelBuilder.Entity("Eventa.DataAccess.Entities.Organizer", b =>
+            modelBuilder.Entity("Eventa.DataAccess.Entities.OrganizerRating", b =>
                 {
-                    b.Property<int>("OrganizerID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrganizerID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.HasKey("OrganizerID");
+                    b.Property<string>("OrganizerId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.ToTable("Organizers");
+                    b.Property<DateTime>("RatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OrganizerRating");
                 });
 
             modelBuilder.Entity("Eventa.DataAccess.Entities.UserFavorite", b =>
@@ -414,7 +428,7 @@ namespace Eventa.DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Eventa.DataAccess.Entities.Organizer", "Organizer")
+                    b.HasOne("Eventa.DataAccess.Entities.AppUser", "Organizer")
                         .WithMany()
                         .HasForeignKey("OrganizerId");
 
