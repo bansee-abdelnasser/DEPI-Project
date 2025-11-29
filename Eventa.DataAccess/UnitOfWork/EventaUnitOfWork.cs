@@ -18,7 +18,7 @@ namespace Eventa.DataAccess.UnitOfWork
         private readonly UserManager<AppUser> _userManager;
         private readonly ITokenManager _tokenManager;
 
-
+        private readonly Lazy<IOrganizerRatingRepository> _organizerRatings;
         private readonly Lazy<IFavoriteRepository> _favorites;
 
         private readonly Lazy<IBookingRepository> _bookings;
@@ -37,8 +37,8 @@ namespace Eventa.DataAccess.UnitOfWork
             _context = context;
             _userManager = userManger;
             _tokenManager = tokenManager;
+            _organizerRatings = new Lazy<IOrganizerRatingRepository>(() => new OrganizerRatingRepository(_context));
             _favorites = new Lazy<IFavoriteRepository>(() => new FavoriteRepository(_context));
-
             Events = events;
             Categories = categories;
             Announcements = announcements;
@@ -60,6 +60,8 @@ namespace Eventa.DataAccess.UnitOfWork
         public ITicketRepository Tickets { get; }
         public IPaymentRepository Payments { get; }
         public IBookingPaymentRepository BookingPayments { get; }
+        public IOrganizerRatingRepository OrganizerRating => _organizerRatings.Value;
+
 
         public int Save()
         {

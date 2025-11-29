@@ -29,9 +29,10 @@ namespace Eventa.Application.Services
             return _mapper.Map<EventDto>(e);
         }
 
-        public EventDto CreateEvent(CreateEventDto dto)
+        public EventDto CreateEvent(CreateEventDto dto, string organizerId)
         {
             var entity = _mapper.Map<Event>(dto);
+            entity.OrganizerId = organizerId;
             _unit.Events.Create(entity);
             _unit.Save();
             return _mapper.Map<EventDto>(entity);

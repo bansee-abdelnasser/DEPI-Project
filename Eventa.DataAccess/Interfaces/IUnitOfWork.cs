@@ -1,4 +1,5 @@
 ﻿using Eventa.DataAccess.Entities;
+using Eventa.DataAccess.Repositories;
 using Eventa.DataAccess.Repositories.Todo.DataAccess.Contracts;
 using Microsoft.AspNetCore.Identity;
 using System;
@@ -13,6 +14,7 @@ namespace Eventa.DataAccess.Interfaces
     public interface IUnitOfWork : IDisposable
     {
         UserManager<AppUser> UserManager { get; }
+        IOrganizerRatingRepository OrganizerRating { get; }
         public ITokenManager TokenManager { get; }
 
         IFavoriteRepository Favorites { get; }

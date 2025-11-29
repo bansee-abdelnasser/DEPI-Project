@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Eventa.Application.DTOs.Event;
 using Eventa.Application.Interfaces;
 using Eventa.DataAccess.Entities;
-using Eventa.Application.DTOs.Event;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 
 namespace Eventa.API.Controllers
@@ -25,14 +26,18 @@ namespace Eventa.API.Controllers
             if (e == null) return NotFound();
             return Ok(e);
         }
-
+        [Authorize(Roles = "organizers")]
         [HttpPost]
         public IActionResult Create(CreateEventDto dto)
         {
-            var created = _service.CreateEvent(dto);
+            var organizerId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(organizerId))
+                return Unauthorized();
+
+            var created = _service.CreateEvent(dto, organizerId);
             return CreatedAtAction(nameof(Get), new { id = created.Id }, created);
         }
-
+        [Authorize(Roles = "organizers")]
         [HttpPut("{id}")]
         public IActionResult Update(int id, UpdateEventDto dto)
         {
@@ -40,7 +45,7 @@ namespace Eventa.API.Controllers
             if (!ok) return NotFound();
             return NoContent();
         }
-
+        [Authorize(Roles = "organizers")]
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
