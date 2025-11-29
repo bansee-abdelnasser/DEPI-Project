@@ -2,6 +2,7 @@
 using Eventa.Application.Interfaces;
 using Eventa.DataAccess.Entities;
 using Eventa.DataAccess.Interfaces;
+using Eventa.DataAccess.Migrations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -99,6 +100,11 @@ namespace Eventa.Application.Services
 
             loginResult.Succeeded = true;
             return loginResult;
+        }
+
+        public async Task<AppUser?> GetUserByIdAsync(string userId)
+        {
+            return await _uow.UserManager.FindByIdAsync(userId);
         }
 
         public async Task<ProfileUpdateResultDto> UpdateProfileAsync(string userId, UpdateProfileDto dto)
@@ -214,6 +220,38 @@ namespace Eventa.Application.Services
             return true;
         }
 
+        public async Task<IdentityResult> SwitchToOrganizerAsync(string userId)
+        {
+            var user = await _uow.UserManager.FindByIdAsync(userId);
+            if (user == null)
+                throw new Exception("User not found");
+
+            // Optionally remove from "users" role
+            if (await _uow.UserManager.IsInRoleAsync(user, "users"))
+                await _uow.UserManager.RemoveFromRoleAsync(user, "users");
+
+            // Add to "organizers" role
+            var result = await _uow.UserManager.AddToRoleAsync(user, "organizers");
+
+            return result;
+        }
+
+        public async Task<IdentityResult> SwitchToUserAsync(string userId)
+        {
+            var user = await _uow.UserManager.FindByIdAsync(userId);
+            if (user == null)
+                throw new Exception("User not found");
+
+            // Remove from "organizers" role if exists
+            if (await _uow.UserManager.IsInRoleAsync(user, "organizers"))
+                await _uow.UserManager.RemoveFromRoleAsync(user, "organizers");
+
+            // Add to "users" role if not exists
+            if (!await _uow.UserManager.IsInRoleAsync(user, "users"))
+                return await _uow.UserManager.AddToRoleAsync(user, "users");
+
+            return IdentityResult.Success;
+        }
 
     }
 }

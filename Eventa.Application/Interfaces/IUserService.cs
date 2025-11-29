@@ -1,4 +1,5 @@
 ﻿using Eventa.Application.DTOs.User;
+using Eventa.DataAccess.Entities;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,9 @@ namespace Eventa.Application.Interfaces
 
         Task<UserLoginResult> LoginAsync(UserLoginDto user);
 
+        Task<AppUser?> GetUserByIdAsync(string userId);
+        Task<IdentityResult> SwitchToOrganizerAsync(string userId);
+        Task<IdentityResult> SwitchToUserAsync(string userId);
         Task<ProfileUpdateResultDto> UpdateProfileAsync(string userId,UpdateProfileDto dto);
 
         Task<bool> DeleteProfilePictureAsync(string userId);
