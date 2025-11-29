@@ -21,5 +21,10 @@ namespace Eventa.DataAccess.DataContext
         public DbSet<Category> Categories { get; set; }
         public DbSet<Announcement> Announcements { get; set; }
 
+        public DbSet<Booking> Bookings { get; set; }
+        public DbSet<BookingPayment> BookingPayments { get; set; }
+        public DbSet<Payment> Payments { get; set; }
+        public DbSet<Ticket> Tickets { get; set; }
+
     }
 }

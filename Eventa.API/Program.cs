@@ -27,6 +27,10 @@ namespace Eventa.API
             // Repositories
             builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
             builder.Services.AddScoped<IEventRepository, EventRepository>();
+            builder.Services.AddScoped<IBookingRepository, BookingRepository>();
+            builder.Services.AddScoped<ITicketRepository, TicketRepository>();
+            builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
+            builder.Services.AddScoped<IBookingPaymentRepository, BookingPaymentRepository>();
 
             // Unit of Work
             builder.Services.AddScoped<IUnitOfWork, EventaUnitOfWork>();
@@ -34,6 +38,10 @@ namespace Eventa.API
             // Services
             builder.Services.AddScoped<ICategoryService, CategoryService>();
             builder.Services.AddScoped<IEventService, EventService>();
+            builder.Services.AddScoped<IBookingService, BookingService>();
+            builder.Services.AddScoped<ITicketService, TicketService>();
+            builder.Services.AddScoped<IPaymentService, PaymentService>();
+            builder.Services.AddScoped<IBookingPaymentService, BookingPaymentService>();
 
             builder.Services.AddScoped<IAnnouncementRepository, AnnouncementRepository>();
             builder.Services.AddScoped<IAnnouncementService, AnnouncementService>();
