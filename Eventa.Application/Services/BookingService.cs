@@ -41,6 +41,6 @@ public class BookingService : IBookingService
     {
         var booking = await _bookingRepository.GetByIdAsync(id);
         if (booking != null)
-            await _bookingRepository.DeleteAsync(booking);
+            await _bookingRepository.DeleteAsync(id);
     }
 }
