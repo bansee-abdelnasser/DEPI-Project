@@ -41,6 +41,6 @@ public class TicketService : ITicketService
     {
         var ticket = await _ticketRepository.GetByIdAsync(id);
         if (ticket != null)
-            await _ticketRepository.DeleteAsync(ticket);
+            await _ticketRepository.DeleteAsync(id);
     }
 }

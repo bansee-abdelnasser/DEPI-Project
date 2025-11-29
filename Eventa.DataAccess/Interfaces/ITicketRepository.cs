@@ -17,6 +17,5 @@ namespace Eventa.DataAccess.Interfaces
         Task DeleteAsync(int ticketId);
         Task<bool> ExistsAsync(int ticketId);
         Task<bool> HasAvailableQuantityAsync(int ticketId, int requestedQuantity);
-        Task DeleteAsync(Ticket ticket);
     }
 }

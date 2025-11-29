@@ -41,6 +41,6 @@ public class PaymentService : IPaymentService
     {
         var item = await _paymentRepository.GetByIdAsync(id);
         if (item != null)
-            await _paymentRepository.DeleteAsync(item);
+            await _paymentRepository.DeleteAsync(id);
     }
 }

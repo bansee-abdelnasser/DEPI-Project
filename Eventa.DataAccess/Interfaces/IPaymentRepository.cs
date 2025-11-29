@@ -16,6 +16,5 @@ namespace Eventa.DataAccess.Interfaces
         Task UpdateAsync(Payment payment);
         Task DeleteAsync(int paymentId);
         Task<bool> ExistsAsync(int paymentId);
-        Task DeleteAsync(Payment payment);
     }
 }

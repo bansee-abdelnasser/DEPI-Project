@@ -17,6 +17,5 @@ namespace Eventa.DataAccess.Interfaces
         Task UpdateAsync(Booking booking);
         Task DeleteAsync(int bookingId);
         Task<bool> ExistsAsync(int bookingId);
-        Task DeleteAsync(Booking booking);
     }
 }
