@@ -74,6 +74,23 @@ namespace Eventa.API
 
             builder.Services.AddAuthenticationWithJWT(builder.Configuration);
 
+            builder.Services.AddAuthentication()
+                .AddGoogle(options =>
+                {
+                    options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+                    options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+                })
+                .AddFacebook(options =>
+                {
+                    options.AppId = builder.Configuration["Authentication:Facebook:AppId"];
+                    options.AppSecret = builder.Configuration["Authentication:Facebook:AppSecret"];
+                    options.Scope.Add("email"); 
+                    options.Fields.Add("email");
+                    options.Fields.Add("first_name");
+                    options.Fields.Add("last_name");
+                });
+
+
             builder.Services.AddAuthorization();
 
             var app = builder.Build();
