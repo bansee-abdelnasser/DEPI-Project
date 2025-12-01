@@ -1,0 +1,184 @@
+﻿@{
+    ViewData["Title"] = "Notifications - Eventa";
+}
+
+@section Styles {
+    <style>
+        .page-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 6rem 0 4rem;
+            text-align: center;
+        }
+
+            .page-header h1 {
+                font-size: 3.8rem;
+                font-weight: 800;
+                margin: 0 0 1rem;
+            }
+
+            .page-header p {
+                font-size: 1.3rem;
+                opacity: 0.95;
+            }
+
+        .notifications-container {
+            max-width: 900px;
+            margin: 0 auto 6rem;
+            padding: 0 1.5rem;
+        }
+
+        .notifications-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+            .notifications-header h2 {
+                font-size: 2.2rem;
+                margin: 0;
+            }
+
+        .notifications-list {
+            background: white;
+            border-radius: 24px;
+            box-shadow: var(--shadow-xl);
+            overflow: hidden;
+        }
+
+        .notification-item {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            padding: 1.8rem 2rem;
+            border-bottom: 1px solid #f1f5f9;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+            .notification-item:last-child {
+                border: none;
+            }
+
+            .notification-item.unread {
+                background: #f0f5ff;
+                border-left: 5px solid var(--primary-color);
+            }
+
+            .notification-item:hover {
+                background: #f8fafc;
+            }
+
+        .notification-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+            .notification-icon.success {
+                background: #d1fae5;
+                color: #10b981;
+            }
+
+            .notification-icon.error {
+                background: #fee2e2;
+                color: #ef4444;
+            }
+
+            .notification-icon.warning {
+                background: #fef3c7;
+                color: #f59e0b;
+            }
+
+            .notification-icon.info {
+                background: #dbeafe;
+                color: #6366f1;
+            }
+
+        .notification-content h4 {
+            font-size: 1.3rem;
+            margin: 0 0 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .notification-content p {
+            margin: 0 0 0.5rem;
+            color: #475569;
+            line-height: 1.5;
+        }
+
+        .notification-content small {
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+
+        .notification-delete {
+            margin-left: auto;
+            background: none;
+            border: none;
+            color: #94a3b8;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+
+            .notification-delete:hover {
+                background: #fee2e2;
+                color: #ef4444;
+            }
+
+        .empty-state {
+            text-align: center;
+            padding: 8rem 2rem;
+            color: #94a3b8;
+        }
+
+            .empty-state svg {
+                width: 120px;
+                height: 120px;
+                opacity: 0.4;
+                margin-bottom: 2rem;
+            }
+    </style>
+}
+
+<!-- Page Header -->
+<div class="page-header">
+    <div class="container">
+        <h1>Notifications</h1>
+        <p>Stay updated with your bookings, events, and account activity</p>
+    </div>
+</div>
+
+<div class="notifications-container">
+    <div class="notifications-header">
+        <h2>All Notifications</h2>
+        <button id="clearAllBtn" class="btn btn-outline" style="padding:0.8rem 1.8rem;">
+            Clear All
+        </button>
+    </div>
+
+    <div class="notifications-list">
+        <div id="notificationsList">
+            <!-- Notifications injected by JS -->
+        </div>
+    </div>
+
+    <div id="emptyState" class="empty-state" style="display:none;">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+        </svg>
+        <h3>No notifications yet</h3>
+        <p>We'll notify you when something important happens</p>
+    </div>
+</div>
+
+<script src="~/js/notifications.js" asp-append-version="true"></script>

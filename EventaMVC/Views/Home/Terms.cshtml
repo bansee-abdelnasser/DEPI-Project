@@ -1,0 +1,188 @@
+﻿@{
+    Layout = "_AuthLayout";  // بدون هيدر وفوتر
+    ViewData["Title"] = "Terms of Service - Eventa";
+}
+
+@section Styles {
+    <style>
+        body {
+            background: #f8fafc;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+        }
+
+        .terms-container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 32px;
+            padding: 4rem 3rem;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.12);
+            line-height: 1.8;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            text-align: center;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+            margin: 0 0 1rem;
+        }
+
+        .last-updated {
+            text-align: center;
+            color: #64748b;
+            margin-bottom: 3rem;
+            font-style: italic;
+            font-size: 1.1rem;
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin: 3rem 0 1.5rem;
+            color: #1e293b;
+            position: relative;
+            padding-bottom: 0.8rem;
+        }
+
+            h2::after {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 70px;
+                height: 4px;
+                background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+                border-radius: 2px;
+            }
+
+        p, li {
+            color: #475569;
+            margin-bottom: 1.2rem;
+            font-size: 1.1rem;
+        }
+
+        ul {
+            padding-left: 1.8rem;
+            margin-bottom: 1.8rem;
+        }
+
+            ul li {
+                margin-bottom: 0.9rem;
+                position: relative;
+            }
+
+                ul li::marker {
+                    color: var(--primary-color);
+                }
+
+        strong {
+            color: #1e293b;
+            font-weight: 600;
+        }
+
+        a {
+            color: var(--primary-color);
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+            a:hover {
+                text-decoration: underline;
+            }
+
+        .footer-note {
+            text-align: center;
+            margin-top: 5rem;
+            padding-top: 2.5rem;
+            border-top: 1px solid #e2e8f0;
+            color: #94a3b8;
+            font-size: 0.98rem;
+        }
+
+        @@media (max-width: 768px) {
+            .terms-container {
+                padding: 3rem 2rem;
+                border-radius: 24px;
+            }
+
+            h1 {
+                font-size: 2.4rem;
+            }
+
+            h2 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+}
+
+<div class="terms-container">
+    <h1>Terms of Service</h1>
+    <p class="last-updated">Last updated: December 01, 2025</p>
+
+    <p>Welcome to <strong>Eventa</strong>! These Terms of Service govern your use of our website and services. By accessing or using Eventa, you agree to be bound by these terms.</p>
+
+    <h2>1. Acceptance of Terms</h2>
+    <p>By creating an account, purchasing tickets, or using any part of Eventa, you agree to these Terms and our Privacy Policy. If you do not agree, please do not use our services.</p>
+
+    <h2>2. Eligibility</h2>
+    <p>You must be at least 16 years old to use Eventa. By using our platform, you represent that you meet this requirement.</p>
+
+    <h2>3. Account Responsibility</h2>
+    <p>You are responsible for maintaining the confidentiality of your account and password. You agree to notify us immediately of any unauthorized use of your account.</p>
+
+    <h2>4. Ticket Purchases & Refunds</h2>
+    <ul>
+        <li>All ticket sales are final unless the event is cancelled or rescheduled.</li>
+        <li>Refunds are processed according to the event organizer’s policy.</li>
+        <li>Eventa acts as an intermediary and is not responsible for event quality or execution.</li>
+    </ul>
+
+    <h2>5. User Conduct</h2>
+    <p>You agree not to:</p>
+    <ul>
+        <li>Use the platform for any unlawful purpose</li>
+        <li>Resell tickets in violation of any applicable laws</li>
+        <li>Impersonate any person or entity</li>
+        <li>Interfere with or disrupt the service</li>
+    </ul>
+
+    <h2>6. Organizer Responsibilities</h2>
+    <p>Event organizers are solely responsible for:</p>
+    <ul>
+        <li>Event content, safety, and execution</li>
+        <li>Providing accurate event information</li>
+        <li>Handling attendee inquiries and refunds</li>
+    </ul>
+
+    <h2>7. Intellectual Property</h2>
+    <p>All content on Eventa (excluding user-submitted content) is owned by Eventa or its licensors. You may not use it without permission.</p>
+
+    <h2>8. Limitation of Liability</h2>
+    <p>Eventa is not liable for any indirect, incidental, or consequential damages arising from your use of the platform.</p>
+
+    <h2>9. Termination</h2>
+    <p>We reserve the right to suspend or terminate your account at any time for violation of these terms.</p>
+
+    <h2>10. Changes to Terms</h2>
+    <p>We may update these terms from time to time. Continued use of Eventa after changes constitutes acceptance of the new terms.</p>
+
+    <h2>11. Contact Us</h2>
+    <p>
+        If you have any questions about these Terms, please contact us at
+        <a href="mailto:legal@eventa.com">legal@eventa.com</a>
+    </p>
+
+    <div class="footer-note">
+        &copy; 2025 Eventa. All rights reserved.
+    </div>
+</div>

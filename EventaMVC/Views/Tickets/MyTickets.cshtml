@@ -1,0 +1,241 @@
+﻿@{
+    ViewData["Title"] = "My Tickets - Eventa";
+}
+
+<!-- QR Code Library -->
+<script src="https://cdn.jsdelivr.net/npm/qrcode.js@1.0.0/lib/qrcode.min.js"></script>
+
+@section Styles {
+    <style>
+        .page-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 6rem 0 5rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-header::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: url('https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=1920');
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            opacity: 0.15;
+        }
+
+            .page-header h1 {
+                font-size: 4.2rem;
+                font-weight: 800;
+                margin: 0 0 1rem;
+                position: relative;
+            }
+
+            .page-header p {
+                font-size: 1.4rem;
+                opacity: 0.95;
+                max-width: 700px;
+                margin: 0 auto;
+                position: relative;
+            }
+
+        .tickets-container {
+            max-width: 1400px;
+            margin: 0 auto 6rem;
+            padding: 0 1.5rem;
+        }
+
+        .tickets-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 2.8rem;
+        }
+
+        .ticket-card {
+            background: white;
+            border-radius: 28px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.12);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+            .ticket-card:hover {
+                transform: translateY(-15px);
+                box-shadow: 0 35px 80px rgba(99,102,241,0.25);
+            }
+
+        .ticket-status {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: #10b981;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            z-index: 10;
+            box-shadow: 0 4px 15px rgba(16,185,129,0.4);
+        }
+
+        .ticket-header {
+            background: linear-gradient(135deg, #1e293b, #334155);
+            color: white;
+            padding: 2.5rem 2rem;
+            text-align: center;
+        }
+
+            .ticket-header h3 {
+                font-size: 1.8rem;
+                margin: 0 0 0.6rem;
+                font-weight: 700;
+            }
+
+        .ticket-id {
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            opacity: 0.9;
+            letter-spacing: 1px;
+        }
+
+        .ticket-body {
+            padding: 2.5rem;
+        }
+
+        .ticket-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem 2rem;
+            margin-bottom: 2rem;
+            font-size: 1.05rem;
+        }
+
+            .ticket-info strong {
+                color: #1e293b;
+                display: block;
+                margin-bottom: 0.4rem;
+                font-weight: 600;
+            }
+
+            .ticket-info span {
+                color: #475569;
+            }
+
+        .qr-section {
+            text-align: center;
+            margin: 2.5rem 0;
+            padding: 2rem;
+            background: #f8fafc;
+            border-radius: 24px;
+            border: 3px dashed #e0e7ff;
+        }
+
+            .qr-section canvas {
+                border-radius: 20px;
+                box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+                width: 220px !important;
+                height: 220px !important;
+                margin: 0 auto;
+            }
+
+        .qr-label {
+            margin-top: 1.2rem;
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        .ticket-actions {
+            display: flex;
+            gap: 1.2rem;
+            margin-top: 2rem;
+        }
+
+        .btn-print, .btn-download {
+            flex: 1;
+            padding: 1.1rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 16px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .btn-print {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+        }
+
+        .btn-download {
+            background: #f8fafc;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 10rem 2rem;
+            color: #94a3b8;
+        }
+
+            .empty-state svg {
+                width: 140px;
+                height: 140px;
+                opacity: 0.4;
+                margin-bottom: 2rem;
+            }
+
+            .empty-state h3 {
+                font-size: 2.2rem;
+                margin: 0 0 1rem;
+                color: #475569;
+            }
+
+        @@media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 3rem;
+            }
+
+            .tickets-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .ticket-info {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+}
+
+<!-- Page Header -->
+<div class="page-header">
+    <div class="container">
+        <h1>My Tickets</h1>
+        <p>All your booked events in one place — ready to scan!</p>
+    </div>
+</div>
+
+<!-- Tickets Section -->
+<div class="tickets-container">
+    <div id="ticketsContainer" class="tickets-grid">
+        <!-- Tickets will be injected here -->
+    </div>
+
+    <div id="emptyState" class="empty-state" style="display:none;">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+        </svg>
+        <h3>No tickets yet</h3>
+        <p style="font-size:1.2rem;color:#64748b;max-width:500px;margin:1.5rem auto;">
+            Once you book an event, your tickets will appear here with a unique scannable QR code.
+        </p>
+        <a asp-controller="Events" asp-action="Category" class="btn btn-primary" style="padding:1.2rem 3rem;font-size:1.2rem;">
+            Browse Events
+        </a>
+    </div>
+</div>
+
+<script src="~/js/my-tickets.js" asp-append-version="true"></script>

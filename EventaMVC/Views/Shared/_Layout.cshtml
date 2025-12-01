@@ -1,0 +1,104 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Eventa</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
+    @RenderSection("Styles", required: false)
+</head>
+<body>
+    <!-- Mobile Overlay -->
+    <div class="mobile-overlay"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <a asp-controller="Home" asp-action="Index" class="logo">Eventa</a>
+
+                <button class="mobile-menu-toggle" aria-label="Toggle menu">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z" />
+                    </svg>
+                </button>
+
+                <ul class="nav-menu">
+                    <li><a asp-controller="Home" asp-action="Index" class="nav-link @(ViewContext.RouteData.Values["action"]?.ToString() == "Index" && ViewContext.RouteData.Values["controller"]?.ToString() == "Home" ? "active" : "")">Home</a></li>
+                    <li><a asp-controller="Events" asp-action="Category" class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Events" ? "active" : "")">Events</a></li>
+                    <li><a asp-controller="Home" asp-action="About" class="nav-link @(ViewContext.RouteData.Values["action"]?.ToString() == "About" ? "active" : "")">About</a></li>
+                    <li><a asp-controller="Home" asp-action="Contact" class="nav-link @(ViewContext.RouteData.Values["action"]?.ToString() == "Contact" ? "active" : "")">Contact</a></li>
+                </ul>
+
+                <div class="nav-actions">
+                    <div class="guest-only">
+                        <a asp-controller="Account" asp-action="Login" class="btn btn-outline">Login</a>
+                        <a asp-controller="Account" asp-action="Register" class="btn btn-primary">Sign Up</a>
+                    </div>
+                    <div class="user-only" style="display:none; align-items:center; gap:12px;">
+                        <a asp-controller="Notification" asp-action="Index" class="icon-btn" title="Notifications">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                            </svg>
+                            <span class="notification-badge notification-count">0</span>
+                        </a>
+                        <a asp-controller="Tickets" asp-action="MyTickets" class="icon-btn" title="My Tickets">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                            </svg>
+                            <span class="cart-badge cart-count">0</span>
+                        </a>
+                        <a asp-controller="Account" asp-action="Profile" class="icon-btn" id="userAvatar" title="Profile">A</a>
+                        <a asp-controller="Organizer" asp-action="Index" class="btn btn-secondary organizer-only" style="display:none;">Dashboard</a>
+                        <a href="#" id="logoutBtn" class="btn btn-sm" style="background:#ef4444;color:white;">Logout</a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        @RenderBody()
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-content">
+            <div class="footer-section">
+                <h3 class="logo" style="color:white;font-size:1.8rem;margin-bottom:1rem;">Eventa</h3>
+                <p>Your gateway to unforgettable experiences.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a asp-controller="Home" asp-action="About">About Us</a></li>
+                    <li><a asp-controller="Home" asp-action="Contact">Contact</a></li>
+                    <li><a asp-controller="Home" asp-action="Privacy">Privacy Policy</a></li>
+                    <li><a asp-controller="Home" asp-action="Terms">Terms of Service</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Follow Us</h3>
+                <div style="display:flex;gap:1rem;margin-top:1rem;">
+                    <a href="#" style="color:white;font-size:1.5rem;">Facebook</a>
+                    <a href="#" style="color:white;font-size:1.5rem;">Twitter</a>
+                    <a href="#" style="color:white;font-size:1.5rem;">Instagram</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2025 Eventa. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Main JS -->
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
