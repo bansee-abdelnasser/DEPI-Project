@@ -86,7 +86,8 @@ namespace Eventa.API.Controllers
                     UserName = email,
                     Email = email,
                     FirstName = info.Principal.FindFirstValue(ClaimTypes.GivenName),
-                    LastName = info.Principal.FindFirstValue(ClaimTypes.Surname) ?? "User"
+                    LastName = info.Principal.FindFirstValue(ClaimTypes.Surname) ?? "User",
+                    IsExternalUser = true
 
                 };
 

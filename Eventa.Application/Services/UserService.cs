@@ -34,6 +34,7 @@ namespace Eventa.Application.Services
 
                 Email = user.Email,
                 UserName = user.UserName,
+                IsExternalUser = false
             };
 
             var result = await _uow.UserManager.CreateAsync(identityUser, user.Password);
@@ -110,7 +111,6 @@ namespace Eventa.Application.Services
         public async Task<ProfileUpdateResultDto> UpdateProfileAsync(string userId, UpdateProfileDto dto)
         {
             var user = await _uow.UserManager.FindByIdAsync(userId);
-
             if (user == null)
             {
                 return new ProfileUpdateResultDto
@@ -120,11 +120,22 @@ namespace Eventa.Application.Services
                 };
             }
 
-            // Update username
-            if (!string.IsNullOrWhiteSpace(dto.Username) && dto.Username != user.UserName)
+            bool IsInvalidSwaggerValue(string v) =>
+                string.IsNullOrWhiteSpace(v) || v == "string";
+
+
+            if (!IsInvalidSwaggerValue(dto.FirstName))
+                user.FirstName = dto.FirstName;
+
+            if (!IsInvalidSwaggerValue(dto.LastName))
+                user.LastName = dto.LastName;
+
+
+
+            if (!IsInvalidSwaggerValue(dto.Username) && dto.Username != user.UserName)
             {
                 var existingUser = await _uow.UserManager.FindByNameAsync(dto.Username);
-                if (existingUser != null)
+                if (existingUser != null && existingUser.Id != userId)
                 {
                     return new ProfileUpdateResultDto
                     {
@@ -132,38 +143,61 @@ namespace Eventa.Application.Services
                         Message = "Username already taken."
                     };
                 }
+
                 user.UserName = dto.Username;
+                user.NormalizedUserName = dto.Username.ToUpper();
             }
 
-            if (!string.IsNullOrWhiteSpace(dto.FirstName))
-                user.FirstName = dto.FirstName;
 
-            if (!string.IsNullOrWhiteSpace(dto.LastName))
-                user.LastName = dto.LastName;
 
-            // Update email
-            if (!string.IsNullOrWhiteSpace(dto.Email) && dto.Email != user.Email)
+            if (user.IsExternalUser)
             {
-                var existingEmail = await _uow.UserManager.FindByEmailAsync(dto.Email);
-                if (existingEmail != null)
+                //external users (Google/Facebook) cannot update email
+                if (!IsInvalidSwaggerValue(dto.Email) && dto.Email != user.Email)
                 {
                     return new ProfileUpdateResultDto
                     {
                         Success = false,
-                        Message = "Email already in use."
+                        Message = "External login users cannot change email."
                     };
                 }
-                user.Email = dto.Email;
+            }
+            else
+            {
+                //local users can update email
+                if (!IsInvalidSwaggerValue(dto.Email) && dto.Email != user.Email)
+                {
+                    if (!new System.ComponentModel.DataAnnotations.EmailAddressAttribute().IsValid(dto.Email))
+                    {
+                        return new ProfileUpdateResultDto
+                        {
+                            Success = false,
+                            Message = "Invalid email format."
+                        };
+                    }
+
+                    var existingEmail = await _uow.UserManager.FindByEmailAsync(dto.Email);
+                    if (existingEmail != null && existingEmail.Id != userId)
+                    {
+                        return new ProfileUpdateResultDto
+                        {
+                            Success = false,
+                            Message = "Email already in use."
+                        };
+                    }
+
+                    user.Email = dto.Email;
+                    user.NormalizedEmail = dto.Email.ToUpper();
+                }
             }
 
-            // Update profile picture if provided
+
+
             if (dto.ProfilePicture != null)
             {
-
                 if (!string.IsNullOrEmpty(user.ProfilePictureUrl))
                 {
                     var oldPath = Path.Combine("wwwroot", user.ProfilePictureUrl.TrimStart('/'));
-
                     if (File.Exists(oldPath))
                         File.Delete(oldPath);
                 }
@@ -173,6 +207,7 @@ namespace Eventa.Application.Services
 
                 if (!Directory.Exists(folder))
                     Directory.CreateDirectory(folder);
+
                 var filePath = Path.Combine(folder, fileName);
 
                 using (var stream = new FileStream(filePath, FileMode.Create))
@@ -183,13 +218,78 @@ namespace Eventa.Application.Services
                 user.ProfilePictureUrl = $"/images/profile/{fileName}";
             }
 
-            await _uow.UserManager.UpdateAsync(user);
-            await _uow.SaveChangesAsync();
+
+
+            if (!IsInvalidSwaggerValue(dto.NewPassword))
+            {
+                bool hasPassword = await _uow.UserManager.HasPasswordAsync(user);
+
+                if (!hasPassword)
+                {
+                    // Social login user (Google/Facebook) adding a password for the first time
+                    var addPass = await _uow.UserManager.AddPasswordAsync(user, dto.NewPassword);
+
+                    if (!addPass.Succeeded)
+                    {
+                        return new ProfileUpdateResultDto
+                        {
+                            Success = false,
+                            Message = "Failed to set password.",
+                            Errors = addPass.Errors.Select(e => e.Description).ToList()
+                        };
+                    }
+                }
+                else
+                {
+                    // Normal users changing password
+                    if (IsInvalidSwaggerValue(dto.OldPassword))
+                    {
+                        return new ProfileUpdateResultDto
+                        {
+                            Success = false,
+                            Message = "Old password is required."
+                        };
+                    }
+
+                    var changePass = await _uow.UserManager.ChangePasswordAsync(
+                        user,
+                        dto.OldPassword,
+                        dto.NewPassword
+                    );
+
+                    if (!changePass.Succeeded)
+                    {
+                        return new ProfileUpdateResultDto
+                        {
+                            Success = false,
+                            Message = "Password update failed.",
+                            Errors = changePass.Errors.Select(e => e.Description).ToList()
+                        };
+                    }
+                }
+            }
+
+
+            var updateResult = await _uow.UserManager.UpdateAsync(user);
+
+            if (!updateResult.Succeeded)
+            {
+                return new ProfileUpdateResultDto
+                {
+                    Success = false,
+                    Message = "Failed to update profile.",
+                    Errors = updateResult.Errors.Select(e => e.Description).ToList()
+                };
+            }
 
             return new ProfileUpdateResultDto
             {
                 Success = true,
                 Message = "Profile updated successfully.",
+                UserName = user.UserName,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
                 ProfileImageUrl = user.ProfilePictureUrl
             };
         }
