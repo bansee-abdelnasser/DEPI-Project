@@ -10,8 +10,7 @@ namespace Eventa.Application.DTOs.Event
 {
     public class UpdateEventDto
     {
-        [Required]
-        public int Id { get; set; }
+
 
         [Required]
         [MaxLength(200)]
